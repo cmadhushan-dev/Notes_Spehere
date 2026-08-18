@@ -12,9 +12,8 @@ class ThemeDataDetails {
       elevation: 0,
       iconTheme: IconThemeData(color: AppColors.kWhiteColor),
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData
-    (
-      backgroundColor: AppColors.kFabColor
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppColors.kFabColor,
     ),
   );
 }
