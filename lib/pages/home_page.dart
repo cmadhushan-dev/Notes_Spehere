@@ -1,8 +1,9 @@
-import 'package:dp_notes_spehere_08/utitlites/colors.dart';
 import 'package:dp_notes_spehere_08/utitlites/constnat.dart';
+import 'package:dp_notes_spehere_08/utitlites/router.dart';
 import 'package:dp_notes_spehere_08/utitlites/text_styles.dart';
 import 'package:dp_notes_spehere_08/widgets/progress_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/notes_to_do_card.dart';
 
@@ -34,68 +35,32 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  NotesTodoCard(
-                    title: 'Notes',
-                    description: '3 Notes',
-                    icon: Icons.bookmark_add_outlined,
+                  GestureDetector(
+                    onTap: () {
+                      //go to the notes page (no need t a buildcontext)
+                      AppRouter.routers.push('/notespage');
+                      // //go to the notes page
+                      // GoRouter.of(context).push('/notespage');
+                    },
+                    child: NotesTodoCard(
+                      title: 'Notes',
+                      description: '3 Notes',
+                      icon: Icons.bookmark_add_outlined,
+                    ),
                   ),
-                  NotesTodoCard(
-                    title: 'To Do',
-                    description: '2 Tasks',
-                    icon: Icons.today_outlined,
+                  GestureDetector(
+                    onTap: () {
+                      //go to the todo list (no need t a buildcontext)
+                      AppRouter.routers.push('/todopage');
+                      // //go to the todo list
+                      // GoRouter.of(context).push('/todopage');
+                    },
+                    child: NotesTodoCard(
+                      title: 'To Do',
+                      description: '2 Tasks',
+                      icon: Icons.today_outlined,
+                    ),
                   ),
-                  // Container(
-                  //   width: 160,
-                  //   height: 160,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(12),
-                  //     color: AppColors.kCardColor,
-                  //   ),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(vertical: 15),
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //       children: [
-                  //         Icon(
-                  //           Icons.bookmark_add,
-                  //           color: AppColors.kWhiteColor,
-                  //           size: 36,
-                  //         ),
-                  //         Text('Notes', style: AppTextStyles.appSubtitle),
-                  //         Text(
-                  //           '3 Notes',
-                  //           style: AppTextStyles.appDescriptionSmall,
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // Container(
-                  //   width: 160,
-                  //   height: 160,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(12),
-                  //     color: AppColors.kCardColor,
-                  //   ),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(vertical: 15),
-                  //     child: Column(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //       children: [
-                  //         Icon(
-                  //           Icons.calendar_month,
-                  //           color: AppColors.kWhiteColor,
-                  //           size: 36,
-                  //         ),
-                  //         Text('Notes', style: AppTextStyles.appSubtitle),
-                  //         Text(
-                  //           '3 Notes',
-                  //           style: AppTextStyles.appDescriptionSmall,
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
               const SizedBox(height: 16),

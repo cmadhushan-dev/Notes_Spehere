@@ -1,4 +1,6 @@
 import 'package:dp_notes_spehere_08/pages/home_page.dart';
+import 'package:dp_notes_spehere_08/pages/notes_page.dart';
+import 'package:dp_notes_spehere_08/pages/todo_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,6 +15,22 @@ class AppRouter {
         path: '/homePage',
         builder: (context, state) {
           return const HomePage();
+        },
+      ),
+      // todo page
+      GoRoute(
+        name: 'todopage',
+        path: '/todopage',
+        builder: (context, state) {
+          return const TodoPage();
+        },
+      ),
+      //notes  page
+      GoRoute(
+        name: 'notespage',
+        path: '/notespage',
+        builder: (context, state) {
+          return const NotesPage();
         },
       ),
     ],
