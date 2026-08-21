@@ -4,6 +4,7 @@ import 'package:dp_notes_spehere_08/utitlites/colors.dart';
 import 'package:dp_notes_spehere_08/utitlites/constnat.dart';
 import 'package:dp_notes_spehere_08/utitlites/router.dart';
 import 'package:dp_notes_spehere_08/utitlites/text_styles.dart';
+import 'package:dp_notes_spehere_08/widgets/notes_card.dart';
 import 'package:flutter/material.dart';
 
 class NotesPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _NotesPageState extends State<NotesPage> {
   //load the notes
   Future<void> _loadNotesFromTheServiceClass() async {
     final List<NoteModel> lodedNotes = await noteService.loadNotes();
-    final Map<String, List<NoteModel>> notesByCategory = await noteService
+    final Map<String, List<NoteModel>> notesByCategory = noteService
         .getNotesByCategoryMap(lodedNotes);
     setState(() {
       allNotes = lodedNotes;
@@ -77,7 +78,49 @@ class _NotesPageState extends State<NotesPage> {
         padding: const EdgeInsets.all(AppConstant.kDefaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text('Notes', style: AppTextStyles.appTitle)],
+          children: [
+            Text('Notes', style: AppTextStyles.appTitle),
+            const SizedBox(height: 30),
+            allNotes.isEmpty
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Center(
+                      child: Text(
+                        "No Notes are availble please click the plus button to add a new note",
+                        style: AppTextStyles.appDescriptionSmall,
+                      ),
+                    ),
+                  )
+                : GridView.builder(
+                    itemCount: notesWithCategory.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: AppConstant.kDefaultPadding,
+                          childAspectRatio: 6 / 4,
+                          mainAxisSpacing: AppConstant.kDefaultPadding,
+                        ),
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          //go to the notes by category page
+                          AppRouter.routers.push(
+                            '/notebycategory',
+                            extra: notesWithCategory.keys.elementAt(index),
+                          );
+                        },
+                        child: NotesCard(
+                          noteCategory: notesWithCategory.keys.elementAt(index),
+                          numberOfNotes: notesWithCategory.values
+                              .elementAt(index)
+                              .length,
+                        ),
+                      );
+                    },
+                  ),
+          ],
         ),
       ),
     );

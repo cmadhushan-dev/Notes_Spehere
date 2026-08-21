@@ -1,4 +1,5 @@
 import 'package:dp_notes_spehere_08/pages/home_page.dart';
+import 'package:dp_notes_spehere_08/pages/notes_by_category.dart';
 import 'package:dp_notes_spehere_08/pages/notes_page.dart';
 import 'package:dp_notes_spehere_08/pages/todo_page.dart';
 import 'package:flutter/widgets.dart';
@@ -31,6 +32,14 @@ class AppRouter {
         path: '/notespage',
         builder: (context, state) {
           return const NotesPage();
+        },
+      ),
+      //view notes ny category
+      GoRoute(
+        path: '/notebycategory',
+        builder: (context, state) {
+          final String category = state.extra as String;
+          return NotesByCategory(category: category);
         },
       ),
     ],
