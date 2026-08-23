@@ -110,4 +110,18 @@ class NoteServices {
       print(error.toString());
     }
   }
+
+  //method to load the all categries
+  Future<List<String>> getAllCtegries() async {
+    final List<String> allCategaries = [];
+    //get all notes(reason for not suggestion is type is dynamic)
+    final dynamic allNotes = await _myNotesBook.get('notes');
+    //loop through the each note and add the category names to the all actegry list
+    for (final note in allNotes) {
+      if (!allCategaries.contains(note.category)) {
+        allCategaries.add(note.category);
+      }
+    }
+    return allCategaries;
+  }
 }

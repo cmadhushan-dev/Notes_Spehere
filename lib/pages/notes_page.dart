@@ -7,6 +7,8 @@ import 'package:dp_notes_spehere_08/utitlites/text_styles.dart';
 import 'package:dp_notes_spehere_08/widgets/notes_card.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/bottm_sheet.dart';
+
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
 
@@ -53,6 +55,28 @@ class _NotesPageState extends State<NotesPage> {
     _checkWhetherUserisNewAndCreateIntialNote();
   }
 
+  //function to open the bottm sheet
+  void openBottomSheet() {
+    showModalBottomSheet(
+      barrierColor: Colors.black.withOpacity(0.7),
+      context: context,
+      builder: (context) {
+        return CategoryInputBottomSheet(
+          onNewNote: () {
+            //close the bottom sheet
+            Navigator.pop(context);
+            AppRouter.routers.push('/createnewnote', extra: false);
+          },
+          onnewCategory: () {
+            //close the bottom sheet
+            Navigator.pop(context);
+            AppRouter.routers.push('/createnewnote', extra: true);
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +90,9 @@ class _NotesPageState extends State<NotesPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          openBottomSheet();
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
           side: BorderSide(color: AppColors.kWhiteColor, width: 2),

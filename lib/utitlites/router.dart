@@ -1,3 +1,4 @@
+import 'package:dp_notes_spehere_08/pages/create_new_note.dart';
 import 'package:dp_notes_spehere_08/pages/home_page.dart';
 import 'package:dp_notes_spehere_08/pages/notes_by_category.dart';
 import 'package:dp_notes_spehere_08/pages/notes_page.dart';
@@ -40,6 +41,14 @@ class AppRouter {
         builder: (context, state) {
           final String category = state.extra as String;
           return NotesByCategory(category: category);
+        },
+      ),
+      //crete new note
+      GoRoute(
+        path: "/createnewnote",
+        builder: (context, state) {
+          final bool isNewCategory = state.extra as bool;
+          return CreateNewNote(isNewCategory: isNewCategory);
         },
       ),
     ],
