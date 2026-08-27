@@ -1,6 +1,8 @@
+import 'package:dp_notes_spehere_08/helpers/snack_bars.dart';
 import 'package:dp_notes_spehere_08/models/note_model.dart';
 import 'package:dp_notes_spehere_08/services/note_services.dart';
 import 'package:dp_notes_spehere_08/utitlites/constnat.dart';
+import 'package:dp_notes_spehere_08/utitlites/router.dart';
 import 'package:dp_notes_spehere_08/utitlites/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +31,24 @@ class _NotesByCategoryState extends State<NotesByCategory> {
         print(noteLists.length);
       });
     });
+  }
+
+  //edit  note
+  void _editNote(NoteModel noteForEdit) {
+    //navigate to the noteedit page
+    AppRouter.routers.push("/editNote", extra: noteForEdit);
+  }
+
+  //remove note
+  Future<void> _removeNote(String id) async {
+    try {
+      await noteService.deleteNote(id);
+      if (mounted) {
+        SnackBarsClass.showSnackBar(context, 'Note deleted Succfully');
+      }
+    } catch (err) {
+      print(err.toString());
+    }
   }
 
   @override
@@ -72,19 +92,22 @@ class _NotesByCategoryState extends State<NotesByCategory> {
                   return NoteCatergoryCard(
                     noteTitle: noteLists[index].title,
                     noteContent: noteLists[index].content,
-                    removeNotes: ()async{},
-                    editNotes:  ()async{},
+                    removeNotes: () async {
+                      await _removeNote(noteLists[index].id);
+                      setState(() {
+                        //remove the valus from the ui list
+                        noteLists.removeAt(index);
+                      });
+                    },
+                    editNotes: () async {
+                      _editNote(noteLists[index]);
+                    },
+                    viewSignleNote: () {
+                      AppRouter.routers.push("/SingleNoteView",extra: noteLists[index]);
+                    },
                   );
                 },
               ),
-
-              // NoteCatergoryCard(
-              //   noteContent:
-              //       'ffrgrggrgkfndjfl nfbfjkfbe febkfbrejer jl.bljb.eb',
-              //   noteTitle: 'This is main Titlle',
-              //   removeNotes: () async {},
-              //   editNotes: () async {},
-              // ),
             ],
           ),
         ),

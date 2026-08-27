@@ -1,9 +1,9 @@
+import 'package:dp_notes_spehere_08/services/note_services.dart';
 import 'package:dp_notes_spehere_08/utitlites/constnat.dart';
 import 'package:dp_notes_spehere_08/utitlites/router.dart';
 import 'package:dp_notes_spehere_08/utitlites/text_styles.dart';
 import 'package:dp_notes_spehere_08/widgets/progress_card.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../widgets/notes_to_do_card.dart';
 
@@ -15,6 +15,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int countOfNote = 0;
+  //function get the count of the categaries
+  Future<void> getCountOfNotes() async {
+    final countOfNotes = await NoteServices().returnTotaoCountOfCategaries();
+    setState(() {
+      countOfNote = countOfNotes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: NotesTodoCard(
                       title: 'Notes',
-                      description: '3 Notes',
+                      description: countOfNote.toString(),
                       icon: Icons.bookmark_add_outlined,
                     ),
                   ),

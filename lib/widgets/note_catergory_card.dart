@@ -7,12 +7,14 @@ class NoteCatergoryCard extends StatefulWidget {
   final String noteContent;
   final Future Function() removeNotes;
   final Future Function() editNotes;
+  final void Function() viewSignleNote;
   const NoteCatergoryCard({
     super.key,
     required this.noteTitle,
     required this.noteContent,
     required this.removeNotes,
     required this.editNotes,
+    required this.viewSignleNote,
   });
 
   @override
@@ -45,27 +47,30 @@ class _NoteCatergoryCardState extends State<NoteCatergoryCard> {
                 ),
               ],
             ),
-
-            SizedBox(
-              width: 150,
-              child: Text(
-                widget.noteTitle,
-                style: AppTextStyles.appSubtitle,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: 150,
-              child: Text(
-                widget.noteContent,
-                style: AppTextStyles.appDescriptionSmall.copyWith(
-                  color: AppColors.kWhiteColor.withOpacity(0.5),
-                ),
-                textAlign: TextAlign.justify,
-                maxLines: 6,
-                overflow: TextOverflow.ellipsis,
+            GestureDetector(
+              onTap: () {
+                widget.viewSignleNote();
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.noteTitle,
+                    style: AppTextStyles.appSubtitle,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.noteContent,
+                    style: AppTextStyles.appDescriptionSmall.copyWith(
+                      color: AppColors.kWhiteColor.withOpacity(0.5),
+                    ),
+                    textAlign: TextAlign.justify,
+                    maxLines: 6,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
           ],

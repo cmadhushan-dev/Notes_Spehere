@@ -1,5 +1,4 @@
 import 'package:dp_notes_spehere_08/models/note_model.dart';
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:uuid/uuid.dart';
 
@@ -31,6 +30,27 @@ class NoteServices {
 
   //create the database refernces for notes
   final _myNotesBook = Hive.box('notes');
+
+  //function to get the total categy count
+  Future<int> returnTotaoCountOfCategaries() async {
+    final dynamic allNotes = await _myNotesBook.get("notes");
+    final Set<String> unqiureRecord = {};
+    for (final note in allNotes) {
+      unqiureRecord.add(note.category);
+    }
+    return unqiureRecord.length;
+  }
+
+  //store a brand new note functon
+  Future<void> storeBrandNewNote(NoteModel newNote) async {
+    try {
+      final dynamic allNotes = await _myNotesBook.get("notes");
+      allNotes.add(newNote);
+      await _myNotesBook.put('notes', allNotes);
+    } catch (error) {
+      print(error.toString());
+    }
+  }
 
   //check wheter the user is a new user if new load intialzing data
   Future<bool> isNewUser() async {
@@ -87,7 +107,7 @@ class NoteServices {
       final dynamic allNotes = await _myNotesBook.get('notes');
       //get the index of updating note
       final int index = allNotes.indexWhere(
-        (element) => element.id == element.id,
+        (element) => element.id == notesForEdit.id,
       );
 
       allNotes[index] = notesForEdit;
