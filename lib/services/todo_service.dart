@@ -7,7 +7,7 @@ class TodoService {
       title: "Read a Book",
       date: DateTime.now(),
       time: DateTime.now(),
-      isDone: true,
+      isDone: false,
     ),
     ToDoModel(
       title: "Attend to pick nick",
