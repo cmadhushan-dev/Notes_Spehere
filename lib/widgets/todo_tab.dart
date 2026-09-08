@@ -1,5 +1,6 @@
 import 'package:dp_notes_spehere_08/helpers/snack_bars.dart';
 import 'package:dp_notes_spehere_08/models/to_do_model.dart';
+import 'package:dp_notes_spehere_08/pages/todo_inherted_class.dart';
 import 'package:dp_notes_spehere_08/services/todo_service.dart';
 import 'package:dp_notes_spehere_08/utitlites/router.dart';
 import 'package:dp_notes_spehere_08/widgets/todo_list_view.dart';
@@ -57,59 +58,65 @@ class _TodoTabState extends State<TodoTab> {
     setState(() {
       widget.uncompltedTods.sort((a, b) => a.time.compareTo(b.time));
     });
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          widget.uncompltedTods.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Center(
-                    child: Text(
-                      "Add Some task",
-                      style: AppTextStyles.appDescriptionSmall.copyWith(
-                        color: Colors.greenAccent,
+    return TodoInhertedClass(
+      todos: widget.uncompltedTods,
+      onTodosChanged: () {
+        
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            widget.uncompltedTods.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Center(
+                      child: Text(
+                        "Add Some task",
+                        style: AppTextStyles.appDescriptionSmall.copyWith(
+                          color: Colors.greenAccent,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: widget.uncompltedTods.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final ToDoModel todoList = widget.uncompltedTods[index];
-                      return Dismissible(
-                        key: Key(todoList.id.toString()),
-                        onDismissed: (direction) {
-                          setState(() {
-                            widget.uncompltedTods.removeAt(index);
-                            TodoService().deleteATodo(todoList);
-                          });
-                          SnackBarsClass.showSnackBar(
-                            context,
-                            "deleted sucsfully",
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TodoListView(
-                            title: todoList.title,
-                            dateCreatedRecord: todoList.date,
-                            timeCretedRecord: todoList.time,
-                            isComplted: false,
-                            onCheckBoxChenged: () {
-                              markTodoAsDone(todoList);
-                            },
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: widget.uncompltedTods.length,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final ToDoModel todoList = widget.uncompltedTods[index];
+                        return Dismissible(
+                          key: Key(todoList.id.toString()),
+                          onDismissed: (direction) {
+                            setState(() {
+                              widget.uncompltedTods.removeAt(index);
+                              TodoService().deleteATodo(todoList);
+                            });
+                            SnackBarsClass.showSnackBar(
+                              context,
+                              "deleted sucsfully",
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TodoListView(
+                              title: todoList.title,
+                              dateCreatedRecord: todoList.date,
+                              timeCretedRecord: todoList.time,
+                              isComplted: false,
+                              onCheckBoxChenged: () {
+                                markTodoAsDone(todoList);
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

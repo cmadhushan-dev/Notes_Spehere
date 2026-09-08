@@ -1,4 +1,5 @@
 import 'package:dp_notes_spehere_08/models/to_do_model.dart';
+import 'package:dp_notes_spehere_08/pages/todo_inherted_class.dart';
 import 'package:dp_notes_spehere_08/utitlites/colors.dart';
 import 'package:dp_notes_spehere_08/utitlites/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -57,62 +58,66 @@ class _CompletedTabState extends State<CompletedTab> {
     setState(() {
       widget.compltedTodos.sort((a, b) => a.time.compareTo(b.time));
     });
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          widget.compltedTodos.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Center(
-                    child: Text(
-                      "Complte Some task",
-                      style: AppTextStyles.appDescriptionSmall.copyWith(
-                        color: Colors.greenAccent,
+    return TodoInhertedClass(
+      todos: widget.compltedTodos,
+      onTodosChanged: () {},
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            widget.compltedTodos.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Center(
+                      child: Text(
+                        "Complte Some task",
+                        style: AppTextStyles.appDescriptionSmall.copyWith(
+                          color: Colors.greenAccent,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: widget.compltedTodos.length,
-                    addAutomaticKeepAlives: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final ToDoModel todoList = widget.compltedTodos[index];
-                      return Dismissible(
-                        key: Key(todoList.id.toString()),
-                        onDismissed: (direction) {
-                          setState(() {
-                            widget.compltedTodos.removeAt(index);
-                            TodoService().deleteATodo(todoList);
-                          });
-                          SnackBarsClass.showSnackBar(
-                            context,
-                            "deleted sucsfully",
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TodoListView(
-                            title: todoList.title,
-                            dateCreatedRecord: todoList.date,
-                            timeCretedRecord: todoList.time,
-                            isComplted: true,
-                            onCheckBoxChenged: () {
-                              markTodoAsUnComplted(todoList);
-                            },
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: widget.compltedTodos.length,
+                      addAutomaticKeepAlives: false,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final ToDoModel todoList = widget.compltedTodos[index];
+                        return Dismissible(
+                          key: Key(todoList.id.toString()),
+                          onDismissed: (direction) {
+                            setState(() {
+                              widget.compltedTodos.removeAt(index);
+                              TodoService().deleteATodo(todoList);
+                            });
+                            SnackBarsClass.showSnackBar(
+                              context,
+                              "deleted sucsfully",
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TodoListView(
+                              title: todoList.title,
+                              dateCreatedRecord: todoList.date,
+                              timeCretedRecord: todoList.time,
+                              isComplted: true,
+                              onCheckBoxChenged: () {
+                                markTodoAsUnComplted(todoList);
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

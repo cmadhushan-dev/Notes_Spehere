@@ -1,5 +1,6 @@
 import 'package:dp_notes_spehere_08/helpers/snack_bars.dart';
 import 'package:dp_notes_spehere_08/models/to_do_model.dart';
+import 'package:dp_notes_spehere_08/pages/todo_inherted_class.dart';
 import 'package:dp_notes_spehere_08/services/todo_service.dart';
 import 'package:dp_notes_spehere_08/utitlites/colors.dart';
 import 'package:dp_notes_spehere_08/utitlites/router.dart';
@@ -159,50 +160,61 @@ class _TodoPageState extends State<TodoPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        bottom: TabBar(
-          dividerColor: AppColors.kBgColor,
-          controller: _tapController,
-          tabs: [
-            Tab(child: Text("ToDo", style: AppTextStyles.appDescriptionSmall)),
-            Tab(
-              child: Text(
-                "Completed",
-                style: AppTextStyles.appDescriptionSmall,
+    return TodoInhertedClass(
+      todos: allTods,
+      onTodosChanged: () {
+        _loadTodos();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            dividerColor: AppColors.kBgColor,
+            controller: _tapController,
+            tabs: [
+              Tab(
+                child: Text("ToDo", style: AppTextStyles.appDescriptionSmall),
               ),
+              Tab(
+                child: Text(
+                  "Completed",
+                  style: AppTextStyles.appDescriptionSmall,
+                ),
+              ),
+            ],
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              AppRouter.routers.go("/homePage");
+            },
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            openModelBottomSheet(context);
+          },
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+
+            side: BorderSide(color: AppColors.kWhiteColor, width: 2),
+          ),
+
+          child: Icon(Icons.add),
+        ),
+        body: TabBarView(
+          controller: _tapController,
+          children: [
+            TodoTab(
+              uncompltedTods: incompltedTods,
+              compltedTodos: compltedTods,
+            ),
+            CompletedTab(
+              compltedTodos: compltedTods,
+              uncompltedTodos: incompltedTods,
             ),
           ],
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            AppRouter.routers.go("/homePage");
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          openModelBottomSheet(context);
-        },
-
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-
-          side: BorderSide(color: AppColors.kWhiteColor, width: 2),
-        ),
-
-        child: Icon(Icons.add),
-      ),
-      body: TabBarView(
-        controller: _tapController,
-        children: [
-          TodoTab(uncompltedTods: incompltedTods, compltedTodos: compltedTods),
-          CompletedTab(
-            compltedTodos: compltedTods,
-            uncompltedTodos: incompltedTods,
-          ),
-        ],
       ),
     );
   }
